@@ -1,40 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CMS采集站数据解析工具
 
-## Getting Started
+- 直接访问CMS采集JSON格式数据，支持视频|小说|套图
+- 无需服务器，无需下载，不需要下载或保存任何数据，打开即用
+- 当前只支持按照类型查询和通过关键字搜索
+- 没有任何广告，见面非常干净简洁
 
-First, run the development server:
+## 使用方式 
+1. 在链接后面加上参数: url=JSON格式的采集地址，地址内带有`/art`的会自动识别为小说|套图类型，其他情况默认当做视频处理
+2. 如果链接不能自动识别类型 可以增加参数 `&type=art`  art=小说|套图 vod=视频
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 在线使用
+[百度资源 cms.eaias.com?url=https://api.apibdzy.com/api.php/provide/vod](https://cms.eaias.com?url=https://api.apibdzy.com/api.php/provide/vod)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 其他资源自己找哈，参考之前的说明换地址就行，换上地址后存个书签下次就能直接访问了。

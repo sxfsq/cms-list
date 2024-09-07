@@ -46,7 +46,7 @@ export default function Home() {
             if (loading) return;
             setLoading(true);
             return axios(
-                "https://proxy.eaias.com/" + config.url + "?ac=detail" + "pg=" + (page || "") + "&wd=" + (wd || "") + "&t=" + (t || "")
+                "https://proxy.eaias.com/" + config.url + "?ac=detail" + "&pg=" + (page || "") + "&wd=" + (wd || "") + "&t=" + (t || "")
             )
                 .then((res) => res.data)
                 .then((data) => {

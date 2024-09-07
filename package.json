@@ -14,8 +14,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-player": "^2.16.0",
-    "rehype-react": "7.1.2",
     "rehype-parse": "^8.0.4",
+    "rehype-react": "7.1.2",
+    "ts-indexdb": "^0.0.8",
     "unified": "10.1.2"
   },
   "devDependencies": {

@@ -1,36 +1,25 @@
 import { Video } from "@/model/video";
-import { useEffect, useState } from "react";
-import VidyardPlayer from "react-player";
+import { useState } from "react";
 import { Modal } from "./modal";
+import { Player } from "./player";
+import { ScroolContain } from "./scrool_contain";
 
-export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType: (tid: number) => void; onScroolEnd: () => void }) => {
+export const VideoList = ({
+    vods,
+    onType,
+    onScroolEnd,
+    onScroolTop,
+}: {
+    vods: Video[];
+    onType: (tid: number) => void;
+    onScroolEnd: () => void;
+    onScroolTop: () => void;
+}) => {
     const [detail, setDetail] = useState<Video>();
     const [showDetail, setShowDetail] = useState(false);
-    const [vodUrlList, setVodUrlList] = useState<{ name: string; url: string }[]>([]);
-    const [currentUrl, setCurrentUrl] = useState("");
-    useEffect(() => {
-        const urlList = detail?.vod_play_url?.split("#") || [];
-        setVodUrlList((vodList) => {
-            vodList.length = 0;
-            urlList.forEach((v) => {
-                vodList.push({ name: v.split("$")[0], url: v.split("$")[1] });
-            });
-            const url = vodList[0]?.url || "";
-            setCurrentUrl(vodList[0]?.url || "");
-            console.log("url: " + url + " can play:" + VidyardPlayer.canPlay(vodList[0]?.url));
-            return [...vodList];
-        });
-    }, [detail]);
+
     return (
-        <div
-            className="vod-list"
-            onScroll={(e) => {
-                const ele = e.target as HTMLDivElement;
-                if (ele.scrollTop + ele.offsetHeight >= ele.scrollHeight - 400) {
-                    onScroolEnd();
-                }
-            }}
-        >
+        <ScroolContain onScroolTop={onScroolTop} onScroolEnd={onScroolEnd} className="vod-list">
             {vods.map((v, i) => {
                 return (
                     <div
@@ -61,60 +50,7 @@ export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType
                 );
             })}
             <div style={{ flex: "auto" }}></div>
-            <Modal
-                open={showDetail}
-                content={
-                    <div
-                        style={{
-                            padding: 12,
-                            backgroundColor: "var(--background)",
-                            height: "100%",
-                            position: "relative",
-                            overflow: "auto",
-                        }}
-                    >
-                        <h3 style={{ marginBottom: 10 }}>{detail?.vod_name}</h3>
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                            {currentUrl ? (
-                                <VidyardPlayer
-                                    width={"calc((100vh - 56px) / 9 * 16)"}
-                                    height={"min(100vdh - 50px,calc(100vw / 16 * 9))"}
-                                    controls={true}
-                                    url={currentUrl}
-                                    config={{
-                                        file: {
-                                            forceHLS: true,
-                                        },
-                                    }}
-                                ></VidyardPlayer>
-                            ) : (
-                                <img style={{ width: "100%" }} alt={detail?.vod_name} src={detail?.vod_pic} />
-                            )}
-                        </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", marginTop: 20 }}>
-                            {vodUrlList.map((v) => {
-                                return (
-                                    <span
-                                        style={{
-                                            marginRight: "16px",
-                                            cursor: "pointer",
-                                            padding: "4px 6px",
-                                            border: "1px solid #ccc",
-                                            borderRadius: 5,
-                                            marginBottom: 8,
-                                        }}
-                                        key={v.url}
-                                        onClick={() => setCurrentUrl(v.url)}
-                                    >
-                                        {v.name}
-                                    </span>
-                                );
-                            })}
-                        </div>
-                    </div>
-                }
-                onClose={() => setShowDetail(false)}
-            ></Modal>
-        </div>
+            <Modal open={showDetail} onClose={() => setShowDetail(false)} content={<Player detail={detail} />} />
+        </ScroolContain>
     );
 };

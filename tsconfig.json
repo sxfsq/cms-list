@@ -27,7 +27,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/.hidden/_document.tsx", "src/.hidden/_app.tsx"  ],
   "exclude": [
     "node_modules"
   ]

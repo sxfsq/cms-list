@@ -2,19 +2,26 @@ import { Art } from "@/model/art";
 import { useState } from "react";
 import { ArtContent } from "./art_content";
 import { Modal } from "./modal";
+import { ScroolContain } from "./scrool_contain";
 
-export const ArtList = ({ arts, onType, onScroolEnd }: { arts: Art[]; onType: (tid: number) => void; onScroolEnd: () => void }) => {
+export const ArtList = ({
+    arts,
+    onType,
+    onScroolEnd,
+    onScroolTop,
+}: {
+    arts: Art[];
+    onType: (tid: number) => void;
+    onScroolEnd: () => void;
+    onScroolTop: () => void;
+}) => {
     const [detail, setDetail] = useState<Art>();
     const [showDetail, setShowDetail] = useState(false);
     return (
-        <div
+        <ScroolContain
+            onScroolTop={onScroolTop}
+            onScroolEnd={onScroolEnd}
             className="art-list"
-            onScroll={(e) => {
-                const ele = e.target as HTMLDivElement;
-                if (ele.scrollTop + ele.offsetHeight >= ele.scrollHeight - 400) {
-                    onScroolEnd();
-                }
-            }}
         >
             {arts.map((v, i) => {
                 return (
@@ -57,6 +64,6 @@ export const ArtList = ({ arts, onType, onScroolEnd }: { arts: Art[]; onType: (t
                 }
                 onClose={() => setShowDetail(false)}
             ></Modal>
-        </div>
+        </ScroolContain>
     );
 };

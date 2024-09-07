@@ -25,7 +25,7 @@ export default function Home() {
     const [tId, setTypeId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [filterText, setFilterText] = useState("");
-    const [scroolLeft, setScroolLeft] = useState(0);
+    const setScroolLeft = useState(0)[1];
     const getList = useCallback(
         (pg: number, wd: string, t: number) => {
             if (!config.url) return;

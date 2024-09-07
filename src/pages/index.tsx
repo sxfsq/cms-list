@@ -120,7 +120,7 @@ export default function Home() {
                 init(url, query.wd as string, Number(query.t));
             }
         }
-    }, [init, query]);
+    }, [init, query.t, query.type, query.url, query.wd]);
 
     if (!config.url) {
         return (

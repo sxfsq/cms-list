@@ -18,11 +18,7 @@ export const ArtList = ({
     const [detail, setDetail] = useState<Art>();
     const [showDetail, setShowDetail] = useState(false);
     return (
-        <ScroolContain
-            onScroolTop={onScroolTop}
-            onScroolEnd={onScroolEnd}
-            className="art-list"
-        >
+        <ScroolContain onScroolTop={onScroolTop} onScroolEnd={onScroolEnd} className="art-list">
             {arts.map((v, i) => {
                 return (
                     <div

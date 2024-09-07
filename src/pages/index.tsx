@@ -21,6 +21,7 @@ export default function Home() {
         type: "vod",
         url: "",
     });
+    const [pageCount, setPageCount] = useState(100);
     const [tId, setTypeId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [filterText, setFilterText] = useState("");
@@ -29,34 +30,34 @@ export default function Home() {
         (pg: number, wd: string, t: number) => {
             if (!config.url) return;
             if (loading) return;
+            if (pg > 1 && pg > pageCount) return;
             setLoading(true);
+            setPage(t);
+            setTypeId(t);
+            let q: { [k: string]: string | undefined } = {
+                wd: wd || undefined,
+                pg: undefined,
+                t: t + "" || undefined,
+                type: (query.type as string) || undefined,
+            };
+
+            let queryString = Object.keys(q)
+                .filter((k) => q[k])
+                .map((k) => k + "=" + q[k])
+                .join("&");
+            push("?url=" + config.url + "&" + queryString);
+
             return axios(
                 "https://proxy.eaias.com/" + config.url + "?ac=detail" + "&pg=" + (pg || "") + "&wd=" + (wd || "") + "&t=" + (t || "")
             )
                 .then((res) => res.data)
                 .then((data) => {
-                    if (pg == 1) {
-                        setArts([]);
-                        setVods([]);
-                    }
                     setConfig((conf) => {
-                        if (conf.type == "vod") setVods((v) => (page > pg ? [...data.list, ...v] : [...v, ...data.list]));
-                        else setArts((v) => (page > pg ? [...data.list, ...v] : [...v, ...data.list]));
+                        if (conf.type == "vod") setVods((v) => (pg == 1 ? [...data.list] : [...v, ...data.list]));
+                        else setArts((v) => (pg == 1 ? [...data.list] : [...v, ...data.list]));
                         return conf;
                     });
-                    setPage(Number(data.page));
-                    setTypeId(t);
-                    let q: { [k: string]: string | undefined } = {
-                        wd: wd || undefined,
-                        pg: undefined,
-                        t: t + "" || undefined,
-                        type: (query.type as string) || undefined,
-                    };
-                    let queryString = Object.keys(q)
-                        .filter((k) => q[k])
-                        .map((k) => k + "=" + q[k])
-                        .join("&");
-                    push("?url=" + config.url + "&" + queryString);
+                    setPageCount(data.pagecount);
                 })
                 .catch((e) => {
                     if (e.status && e.status == 403) {
@@ -67,38 +68,23 @@ export default function Home() {
                 .finally(() =>
                     setTimeout(() => {
                         setLoading(false);
-                    }, 1000)
+                    }, 500)
                 );
         },
-        [config.url, loading, page, push, query.type]
+        [config.url, loading, pageCount, push, query.type]
     );
-
-    useEffect(() => {
-        if (query.url) {
-            setConfig({
-                url: (query.url as string).split("?")[0],
-                type: query.type ? (query.type as "art" | "vod") : query.url.includes("/art") ? "art" : "vod",
-            });
-        }
-        if (query.t) {
-            setTypeId(Number(query.t));
-        }
-        if (query.wd) {
-            setFilterText(query.wd as string);
-        }
-        if (query.pg) {
-            setPage(Number(query.pg));
-        }
-    }, [filterText, query.pg, query.t, query.type, query.url, query.wd]);
-
-    useEffect(() => {
-        if (!config.url) return;
-        axios("https://proxy.eaias.com/" + config.url + "?ac=list")
+    const init = useCallback((url: string, wd: string, tid: number) => {
+        if (!url) return;
+        setLoading(true);
+        axios("https://proxy.eaias.com/" + url + "?ac=list")
             .then((res) => res.data)
             .then((data) => {
                 setTypes(data.class);
+            })
+            .catch((e) => {
+                console.error(e);
             });
-        axios("https://proxy.eaias.com/" + query.url + "?ac=detail" + "&pg=1" + "&wd=" + (query.wd || "") + "&t=" + (query.t || ""))
+        axios("https://proxy.eaias.com/" + url + "?ac=detail" + "&pg=1" + "&wd=" + (wd || "") + "&t=" + (tid || ""))
             .then((res) => res.data)
             .then((data) => {
                 setConfig((v) => {
@@ -106,9 +92,35 @@ export default function Home() {
                     else setArts(data.list);
                     return v;
                 });
+            })
+            .catch((e) => {
+                console.error(e);
+            })
+            .finally(() =>
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500)
+            );
+    }, []);
+
+    useEffect(() => {
+        if (query.url) {
+            let url = ((query.url as string) || "").split("?")[0];
+            setConfig({
+                url: url,
+                type: query.type ? (query.type as "art" | "vod") : url.includes("/art") ? "art" : "vod",
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [config.url]);
+            if (query.t) {
+                setTypeId(Number(query.t));
+            }
+            if (query.wd) {
+                setFilterText(query.wd as string);
+            }
+            if (url) {
+                init(url, query.wd as string, Number(query.t));
+            }
+        }
+    }, [init, query]);
 
     if (!config.url) {
         return (
@@ -123,12 +135,14 @@ export default function Home() {
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
+                                setInput("");
                                 replace("/?url=" + input);
                             }
                         }}
                     />
                     <button
                         onClick={() => {
+                            setInput("");
                             replace("/?url=" + input + "&type=vod");
                         }}
                     >
@@ -136,6 +150,7 @@ export default function Home() {
                     </button>
                     <button
                         onClick={() => {
+                            setInput("");
                             replace("/?url=" + input + "&type=art");
                         }}
                     >

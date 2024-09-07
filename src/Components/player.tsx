@@ -18,54 +18,59 @@ export function Player({ detail }: { detail?: Video }) {
         });
     }, [detail?.vod_play_url]);
     return (
-        <div>
-            <div
-                style={{
-                    padding: 12,
-                    backgroundColor: "var(--background)",
-                    height: "100%",
-                    position: "relative",
-                    overflow: "auto",
-                }}
-            >
-                <h3 style={{ marginBottom: 10 }}>{detail?.vod_name}</h3>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    {currentUrl ? (
-                        <VidyardPlayer
-                            width={"calc((100vh - 56px) / 9 * 16)"}
-                            height={"min(100vdh - 50px,calc(100vw / 16 * 9))"}
-                            controls={true}
-                            url={currentUrl}
-                            config={{
-                                file: {
-                                    forceHLS: true,
-                                },
+        <div
+            style={{
+                padding: 12,
+                backgroundColor: "var(--background)",
+                height: "100%",
+                position: "relative",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <h3 style={{ marginBottom: 10 }}>{detail?.vod_name}</h3>
+            <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+                {currentUrl ? (
+                    <VidyardPlayer
+                        width={"100%"}
+                        height={"100%"}
+                        style={{
+                            width: "calc((100vh - 56px) / 9 * 16)",
+                            height: "auto",
+                            maxHeight: "calc(100vh - 56px)",
+                        }}
+                        controls={true}
+                        url={currentUrl}
+                        config={{
+                            file: {
+                                forceHLS: true,
+                            },
+                        }}
+                    ></VidyardPlayer>
+                ) : (
+                    <img style={{ width: "100%" }} alt={detail?.vod_name} src={detail?.vod_pic} />
+                )}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", marginTop: 20 }}>
+                {vodUrlList.map((v) => {
+                    return (
+                        <span
+                            style={{
+                                marginRight: "16px",
+                                cursor: "pointer",
+                                padding: "4px 6px",
+                                border: "1px solid #ccc",
+                                borderRadius: 5,
+                                marginBottom: 8,
                             }}
-                        ></VidyardPlayer>
-                    ) : (
-                        <img style={{ width: "100%" }} alt={detail?.vod_name} src={detail?.vod_pic} />
-                    )}
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", marginTop: 20 }}>
-                    {vodUrlList.map((v) => {
-                        return (
-                            <span
-                                style={{
-                                    marginRight: "16px",
-                                    cursor: "pointer",
-                                    padding: "4px 6px",
-                                    border: "1px solid #ccc",
-                                    borderRadius: 5,
-                                    marginBottom: 8,
-                                }}
-                                key={v.url}
-                                onClick={() => setCurrentUrl(v.url)}
-                            >
-                                {v.name}
-                            </span>
-                        );
-                    })}
-                </div>
+                            key={v.url}
+                            onClick={() => setCurrentUrl(v.url)}
+                        >
+                            {v.name}
+                        </span>
+                    );
+                })}
             </div>
         </div>
     );

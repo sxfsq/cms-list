@@ -32,7 +32,7 @@ export default function Home() {
             if (loading) return;
             if (pg > 1 && pg > pageCount) return;
             setLoading(true);
-            setPage(t);
+            setPage(pg);
             setTypeId(t);
             let q: { [k: string]: string | undefined } = {
                 wd: wd || undefined,

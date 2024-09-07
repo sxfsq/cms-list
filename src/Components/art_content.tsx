@@ -36,7 +36,7 @@ export const ArtContent = ({ content }: { content?: string }) => {
 
     const renderedContent = useMemo(() => {
         if (!content) return <></>;
-        return processor.processSync(content).result;
+        return processor.processSync(content.replace(/<br><br>/g,'<bar><bar>').replace(/<br>/g,'').replace(/<bar><bar>/g,'<br><br>')).result;
     }, [content, processor]);
     return (
         <>

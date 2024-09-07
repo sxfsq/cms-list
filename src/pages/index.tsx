@@ -58,6 +58,12 @@ export default function Home() {
                         .join("&");
                     push("?url=" + config.url + "&" + queryString);
                 })
+                .catch((e) => {
+                    if (e.status && e.status == 403) {
+                        alert("无权限访问此功能");
+                    }
+                    console.error(e);
+                })
                 .finally(() =>
                     setTimeout(() => {
                         setLoading(false);
@@ -196,7 +202,7 @@ export default function Home() {
                         setScroolLeft((v) => {
                             ele.scrollTo(v + e.deltaY, 0);
                             if (v + e.deltaY < 0) return 0;
-                            if (v + e.deltaY > ele.offsetWidth) return ele.offsetWidth;
+                            if (v + e.deltaY > ele.scrollWidth - ele.offsetWidth) return ele.scrollWidth - ele.offsetWidth;
                             return v + e.deltaY;
                         });
                     }}

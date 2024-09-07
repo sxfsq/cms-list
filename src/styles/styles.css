@@ -82,7 +82,7 @@
 .vod-list .vod-item {
     min-width: min(clamp(240px, 25%, 360px), 100%);
     min-height: 100px;
-    flex: auto;
+    flex: 1;
     padding: 6px;
     cursor: pointer;
     display: flex;

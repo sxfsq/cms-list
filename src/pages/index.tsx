@@ -10,11 +10,12 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
-    const { query, push } = useRouter();
+    const { query, push, replace } = useRouter();
     const [types, setTypes] = useState<Type[]>([]);
     const [vods, setVods] = useState<Video[]>([]);
     const [arts, setArts] = useState<Art[]>([]);
     const [page, setPage] = useState(1);
+    const [input, setInput] = useState<string>("");
     const [config, setConfig] = useState<{ url?: string; type: "vod" | "art" }>({
         type: "vod",
         url: "",
@@ -84,6 +85,36 @@ export default function Home() {
                 setTypeId(0);
             });
     }, [config.url]);
+    if (!config.url) {
+        return (
+            <div className="init-wrap">
+                <div>
+                    <input
+                        type="text"
+                        placeholder="请输入采集地址"
+                        value={input}
+                        onChange={(e) => {
+                            setInput(e.target.value);
+                        }}
+                    />
+                    <button
+                        onClick={() => {
+                            replace("/?url=" + input + "&type=vod");
+                        }}
+                    >
+                        视频
+                    </button>
+                    <button
+                        onClick={() => {
+                            replace("/?url=" + input + "&type=art");
+                        }}
+                    >
+                        图文
+                    </button>
+                </div>
+            </div>
+        );
+    }
     return (
         <>
             <Head>

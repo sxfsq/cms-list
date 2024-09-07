@@ -11,7 +11,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const wd = Array.isArray(req.query.wd) ? req.query.wd[0] : req.query.wd || "";
     const t = Array.isArray(req.query.t) ? req.query.t[0] : req.query.t || "";
     const url = `${baseUrl}?ac=detail&pg=${page}&wd=${wd}&t=${t}`;
-    const result = await fetch(url).then((r) => r.json());
-
-    res.status(200).json(createPageResult(result.list, result));
+    try {
+        const result = await fetch(url).then((r) => r.json());
+        res.status(200).json(createPageResult(result.list, result));
+    } catch (e) {
+        return res.status(500).end();
+    }
 }

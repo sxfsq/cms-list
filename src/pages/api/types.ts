@@ -8,7 +8,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const baseUrl = decodeURIComponent(Array.isArray(req.query.url) ? req.query.url[0] : req.query.url || "");
     // const page = Array.isArray(req.query.pg) ? req.query.pg[0] : req.query.pg || "1";
     // const wd = Array.isArray(req.query.wd) ? req.query.wd[0] : req.query.wd || "";
-    const result = await fetch(`${baseUrl}?ac=list`).then((r) => r.json());
+    try {
+        const result = await fetch(`${baseUrl}?ac=list`).then((r) => r.json());
 
-    res.status(200).json(createPageResult(result.class, result));
+        res.status(200).json(createPageResult(result.class, result));
+    } catch (error) {
+        res.status(500).end();
+    }
 }

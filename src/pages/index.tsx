@@ -26,7 +26,7 @@ export default function Home() {
     useEffect(() => {
         if (query.url) {
             setConfig({
-                url: query.url as string,
+                url: "https://proxy.eaias.com/" + (query.url as string),
                 type: query.type ? (query.type as "art" | "vod") : query.url.includes("/art") ? "art" : "vod",
             });
         }
@@ -45,7 +45,7 @@ export default function Home() {
             if (!config.url) return;
             if (loading) return;
             setLoading(true);
-            return axios("/api/list?url=" + config.url + "&pg=" + (page || "") + "&wd=" + (wd || "") + "&t=" + (t || ""))
+            return axios(config.url + "?ac=detail" + "pg=" + (page || "") + "&wd=" + (wd || "") + "&t=" + (t || ""))
                 .then((res) => res.data)
                 .then((data) => {
                     if (page == 1) {
@@ -68,12 +68,12 @@ export default function Home() {
 
     useEffect(() => {
         if (!config.url) return;
-        axios("/api/types?url=" + config.url)
+        axios(config.url + "?ac=list")
             .then((res) => res.data)
             .then((data) => {
-                setTypes(data.list);
+                setTypes(data.class);
             });
-        axios("/api/list?url=" + config.url)
+        axios(config.url + "?ac=detail")
             .then((res) => res.data)
             .then((data) => {
                 setConfig((v) => {

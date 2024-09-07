@@ -96,11 +96,12 @@ export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType
                                 return (
                                     <span
                                         style={{
-                                            marginLeft: "16px",
+                                            marginRight: "16px",
                                             cursor: "pointer",
                                             padding: "4px 6px",
                                             border: "1px solid #ccc",
                                             borderRadius: 5,
+                                            marginBottom: 8,
                                         }}
                                         key={v.url}
                                         onClick={() => setCurrentUrl(v.url)}

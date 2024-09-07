@@ -16,12 +16,12 @@ export const ArtList = ({ arts, onType, onScroolEnd }: { arts: Art[]; onType: (t
                 }
             }}
         >
-            {arts.map((v) => {
+            {arts.map((v, i) => {
                 return (
                     <div
                         className="art-item"
                         style={{ width: v.art_pic && v.art_pic.startsWith("http") ? "min(clamp(240px, 25%, 360px), 100%)" : undefined }}
-                        key={v.art_id}
+                        key={v.art_id + "_" + i}
                         onClick={() => {
                             setDetail(v);
                             setShowDetail(true);

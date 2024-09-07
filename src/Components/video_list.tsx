@@ -31,11 +31,11 @@ export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType
                 }
             }}
         >
-            {vods.map((v) => {
+            {vods.map((v, i) => {
                 return (
                     <div
                         className="vod-item"
-                        key={v.vod_id}
+                        key={v.vod_id + "_" + i}
                         onClick={() => {
                             setDetail(v);
                             setShowDetail(true);
@@ -74,11 +74,11 @@ export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType
                         }}
                     >
                         <h3 style={{ marginBottom: 10 }}>{detail?.vod_name}</h3>
-                        <div>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
                             {currentUrl ? (
                                 <VidyardPlayer
-                                    width={"100%"}
-                                    height={"calc(100vw / 16 * 9)"}
+                                    width={"calc((100vh - 56px) / 9 * 16)"}
+                                    height={"min(100vdh - 50px,calc(100vw / 16 * 9))"}
                                     controls={true}
                                     url={currentUrl}
                                     config={{

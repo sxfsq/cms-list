@@ -30,7 +30,7 @@
 .header .search input {
     height: 32px;
     width: 100%;
-    max-width: 300px;
+    max-width: 500px;
     border-radius: 5px 0 0 5px;
     box-shadow: none;
     border: 1px solid #ccc;
@@ -41,11 +41,12 @@
 }
 .header .search button {
     height: 32px;
-    padding: 0 10px;
+    padding: 0 8px;
     cursor: pointer;
     border-radius: 0 5px 5px 0;
     border: 1px solid #ccc;
     margin-left: -1px;
+    line-height: 32px;
 }
 
 .type-list {
@@ -81,12 +82,18 @@
 .vod-list .vod-item {
     min-width: min(clamp(240px, 25%, 360px), 100%);
     min-height: 100px;
-    flex: 1;
+    flex: auto;
     padding: 6px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
 }
+@media screen and (min-width: 768px) {
+    .vod-list .vod-item {
+        max-width: 50%;
+    }
+}
+
 .vod-list .vod-item:hover {
     position: relative;
     top: -3px;
@@ -211,7 +218,7 @@
 }
 .init-wrap > div button {
     height: 32px;
-    padding: 0 10px;
+    padding: 0 8px;
     cursor: pointer;
     border-radius: 0;
     border: 1px solid #ccc;
@@ -219,4 +226,24 @@
 }
 .init-wrap > div button:last-child {
     border-radius: 0 5px 5px 0;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.loading {
+    position: fixed;
+    height: min-content;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    padding: 10px;
+}
+.loading svg {
+    animation: rotate 2s infinite linear;
 }

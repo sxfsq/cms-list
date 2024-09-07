@@ -66,7 +66,7 @@ export const VideoList = ({ vods, onType, onScroolEnd }: { vods: Video[]; onType
                 content={
                     <div
                         style={{
-                            padding: "16px",
+                            padding: 12,
                             backgroundColor: "var(--background)",
                             height: "100%",
                             position: "relative",

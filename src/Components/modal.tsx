@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 
 let zIndex = 99;
 const modalIdxList: number[] = [];
@@ -47,8 +48,8 @@ export const Modal = ({ open, content, onClose }: { open: boolean; content: Reac
             window.removeEventListener("popstate", handleBackButton);
         };
     }, [handleBackButton]);
-
-    return show ? (
+    if (!open) return <></>;
+    let wrap = (
         <div style={{ position: "fixed", left: 0, top: 0, width: "100%", height: "100%", overflow: "auto", zIndex: zIndex }}>
             <span
                 style={{ cursor: "pointer", position: "fixed", top: 0, right: 10, padding: 10, zIndex: 1 }}
@@ -61,7 +62,7 @@ export const Modal = ({ open, content, onClose }: { open: boolean; content: Reac
             </span>
             {content}
         </div>
-    ) : (
-        <></>
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return createPortal(wrap as any, document.body);
 };

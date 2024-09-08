@@ -7,8 +7,10 @@ export type Video = {
     vod_en: string;
     vod_class: string;
     vod_author: string;
+    vod_blurb: string;
+    vod_duration: string;
     vod_pic: string;
-    vod_time: string;
+    vod_pubdate: string;
     vod_content: string;
     vod_play_url: string;
     vod_down_url: string;

@@ -32,8 +32,8 @@ export const ArtList = ({
                     >
                         {v.art_pic && v.art_pic.startsWith("http") && <img className="art-pic" alt={v.art_name} src={v.art_pic} />}
                         <div className="art-info">
-                            <div className="art-name">{v.art_name}</div>
-                            <div className="art-blurb">{v.art_blurb}</div>
+                            <div className="art-name" dangerouslySetInnerHTML={{ __html: v.art_name || "" }}></div>
+                            <div className="art-blurb" dangerouslySetInnerHTML={{ __html: v.art_blurb || "" }}></div>
                             <div className="art-info-footer">
                                 <span className="art-time">{v.art_time}</span>
                                 <span
@@ -53,8 +53,8 @@ export const ArtList = ({
             <Modal
                 open={showDetail}
                 content={
-                    <div className="art-detail" style={{ padding: "16px", backgroundColor: "var(--background)" }}>
-                        <h3 style={{ marginBottom: 10 }}>{detail?.art_name}</h3>
+                    <div className="art-detail" style={{ padding: 10, backgroundColor: "var(--background)" }}>
+                        <h3 style={{ marginBottom: 10 }} dangerouslySetInnerHTML={{ __html: detail?.art_name || "" }}></h3>
                         <ArtContent content={detail?.art_content} />
                     </div>
                 }

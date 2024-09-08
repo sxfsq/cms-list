@@ -52,6 +52,7 @@ export function Player({ detail }: { detail?: Video }) {
                     <img style={{ width: "100%" }} alt={detail?.vod_name} src={detail?.vod_pic} />
                 )}
             </div>
+            <div style={{ padding: 12 }} dangerouslySetInnerHTML={{ __html: detail?.vod_blurb || "" }} />
             <div style={{ display: "flex", flexWrap: "wrap", marginTop: 20 }}>
                 {vodUrlList.map((v) => {
                     return (

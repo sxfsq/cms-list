@@ -32,24 +32,28 @@ export const VideoList = ({
                     >
                         <img className="vod-pic" alt={v.vod_name} src={v.vod_pic} />
                         <div className="vod-info">
-                            <div className="vod-name">{v.vod_name}</div>
+                            <div className="vod-name" onClick={(e) => e.stopPropagation()} dangerouslySetInnerHTML={{ __html: v.vod_name || "" }} />
+                            {/* <span style={{ flex: 1 }}></span> */}
                             <div className="vod-info-footer">
-                                <span className="vod-time">{v.vod_time}</span>
-                                <span
-                                    className="vod-class"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onType(v.type_id);
-                                    }}
-                                >
-                                    {v.type_name}
+                                <span className="vod-duration">{v.vod_duration}</span>
+                                <span className="vod-time">
+                                    {v.vod_pubdate}{" "}
+                                    <span
+                                        className="vod-class"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onType(v.type_id);
+                                        }}
+                                    >
+                                        {v.type_name}
+                                    </span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 );
             })}
-            <div style={{ flex: "auto" }}></div>
+            {/* <div style={{ flex: "auto" }}></div> */}
             <Modal open={showDetail} onClose={() => setShowDetail(false)} content={<Player detail={detail} />} />
         </ScroolContain>
     );

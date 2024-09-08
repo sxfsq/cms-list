@@ -74,30 +74,36 @@
     padding: 10px 5px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     flex: 1;
     max-height: calc(100vh - 100px);
     overflow: auto;
+    /* align-items: self-end; */
 }
 .vod-list .vod-item {
     min-width: min(clamp(240px, 25%, 360px), 100%);
+    width: 0;
     min-height: 100px;
     flex: 1;
     padding: 6px;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
+    border-radius: 4px;
+    position: relative;
+    word-wrap: break-word;
+    cursor: pointer;
+    /* text-wrap: wrap; */
 }
 @media screen and (min-width: 768px) {
     .vod-list .vod-item {
-        max-width: 50%;
+        max-width: 460px;
     }
 }
 
 .vod-list .vod-item:hover {
-    position: relative;
     top: -3px;
     box-shadow: 0 3px 0px #0f93ff;
+    background-color: #0004;
 }
 .vod-list .vod-item .vod-pic {
     width: 100%;
@@ -111,7 +117,7 @@
     flex-direction: column;
 }
 .vod-list .vod-item .vod-info .vod-name {
-    flex: 1;
+    cursor: text;
 }
 .vod-list .vod-item .vod-info .vod-info-footer {
     margin-top: 5px;
@@ -119,8 +125,11 @@
     justify-content: space-between;
     opacity: 0.7;
     font-size: 14px;
+    cursor: text;
 }
-
+.vod-list .vod-item .vod-info .vod-class {
+    cursor: pointer;
+}
 .art-list {
     padding: 10px 5px;
     display: flex;
@@ -141,11 +150,14 @@
     flex-wrap: wrap;
     margin: 3px 5px;
     flex: auto;
+    border-radius: 4px;
 }
 .art-list .art-item:hover {
     position: relative;
     top: -3px;
     box-shadow: 0 3px 0px #0f93ff;
+    background-color: #0004;
+    border-bottom-color: transparent;
 }
 .art-list .art-item .art-pic {
     min-width: min(clamp(240px, 25%, 360px), 100%);
@@ -174,6 +186,9 @@
     justify-content: space-between;
     opacity: 0.7;
     font-size: 14px;
+}
+.art-detail .art-content {
+    min-height: calc(100dvh - 60px);
 }
 .art-detail .art-content img {
     max-width: 100%;

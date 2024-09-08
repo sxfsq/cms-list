@@ -36,9 +36,9 @@ export function Player({ detail }: { detail?: Video }) {
                         width={"100%"}
                         height={"100%"}
                         style={{
-                            width: "calc((100vh - 56px) / 9 * 16)",
+                            width: "calc((100dvh - 56px) / 9 * 16)",
                             height: "auto",
-                            maxHeight: "calc(100vh - 56px)",
+                            maxHeight: "calc(100dvh - 56px)",
                         }}
                         controls={true}
                         url={currentUrl}

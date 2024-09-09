@@ -1,6 +1,7 @@
 "use client";
 import { ArtList } from "@/Components/art_list";
 import { Loading } from "@/Components/loading";
+import { addHistory, UrlHistory } from "@/Components/url_history";
 import { VideoList } from "@/Components/video_list";
 import { Art } from "@/model/art";
 import { Type } from "@/model/type";
@@ -52,6 +53,7 @@ export default function Home() {
             )
                 .then((res) => res.data)
                 .then((data) => {
+                    if (!Array.isArray(data.list)) return;
                     setConfig((conf) => {
                         if (conf.type == "vod") setVods((v) => (pg == 1 ? [...data.list] : [...v, ...data.list]));
                         else setArts((v) => (pg == 1 ? [...data.list] : [...v, ...data.list]));
@@ -79,6 +81,7 @@ export default function Home() {
         axios("https://proxy.eaias.com/" + url + "?ac=list")
             .then((res) => res.data)
             .then((data) => {
+                if (!Array.isArray(data.class)) return;
                 setTypes(data.class);
             })
             .catch((e) => {
@@ -87,6 +90,7 @@ export default function Home() {
         axios("https://proxy.eaias.com/" + url + "?ac=detail" + "&pg=1" + "&wd=" + (wd || "") + "&t=" + (tid || ""))
             .then((res) => res.data)
             .then((data) => {
+                if (!Array.isArray(data.list)) return;
                 setConfig((v) => {
                     if (v.type == "vod") setVods(data.list);
                     else setArts(data.list);
@@ -136,6 +140,7 @@ export default function Home() {
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
                                 setInput("");
+                                addHistory(input, input);
                                 replace("/?url=" + input);
                             }
                         }}
@@ -143,6 +148,7 @@ export default function Home() {
                     <button
                         onClick={() => {
                             setInput("");
+                            addHistory(input + "&type=vod", input);
                             replace("/?url=" + input + "&type=vod");
                         }}
                     >
@@ -151,12 +157,14 @@ export default function Home() {
                     <button
                         onClick={() => {
                             setInput("");
+                            addHistory(input + "&type=art", input);
                             replace("/?url=" + input + "&type=art");
                         }}
                     >
                         图文
                     </button>
                 </div>
+                <UrlHistory />
             </div>
         );
     }

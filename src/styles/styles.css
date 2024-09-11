@@ -212,7 +212,7 @@
 }
 .init-wrap {
     margin: 0 auto;
-    margin-top: 30%;
+    padding-top: 30vh;
 }
 .init-wrap > div {
     display: flex;

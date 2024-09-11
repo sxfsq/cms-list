@@ -110,10 +110,12 @@ export default function Home() {
     useEffect(() => {
         if (query.url) {
             let url = ((query.url as string) || "").split("?")[0];
-            setConfig({
+            let conf = {
                 url: url,
                 type: query.type ? (query.type as "art" | "vod") : url.includes("/art") ? "art" : "vod",
-            });
+            };
+            setConfig(conf);
+            addHistory(conf.url + "?type=" + conf.type, conf.type + "|" + new URL(url).hostname);
             if (query.t) {
                 setTypeId(Number(query.t));
             }
@@ -123,6 +125,8 @@ export default function Home() {
             if (url) {
                 init(url, query.wd as string, Number(query.t));
             }
+        } else {
+            setConfig({ url: "", type: "vod" });
         }
     }, [init, query.t, query.type, query.url, query.wd]);
 
@@ -140,7 +144,6 @@ export default function Home() {
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
                                 setInput("");
-                                addHistory(input, input);
                                 replace("/?url=" + input);
                             }
                         }}
@@ -148,7 +151,6 @@ export default function Home() {
                     <button
                         onClick={() => {
                             setInput("");
-                            addHistory(input + "&type=vod", input);
                             replace("/?url=" + input + "&type=vod");
                         }}
                     >
@@ -157,7 +159,6 @@ export default function Home() {
                     <button
                         onClick={() => {
                             setInput("");
-                            addHistory(input + "&type=art", input);
                             replace("/?url=" + input + "&type=art");
                         }}
                     >

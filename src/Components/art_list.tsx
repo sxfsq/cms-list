@@ -17,6 +17,11 @@ export const ArtList = ({
 }) => {
     const [detail, setDetail] = useState<Art>();
     const [showDetail, setShowDetail] = useState(false);
+    
+    if (arts.length == 0) {
+        return <div style={{ marginTop: 30, textAlign: "center" }}>未获取数据</div>;
+    }
+
     return (
         <ScroolContain onScroolTop={onScroolTop} onScroolEnd={onScroolEnd} className="art-list">
             {arts.map((v, i) => {

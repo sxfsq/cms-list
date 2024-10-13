@@ -1,6 +1,7 @@
 "use client";
 import { ArtList } from "@/Components/art_list";
 import { Loading } from "@/Components/loading";
+import { Setting } from "@/Components/setting";
 import { addHistory, UrlHistory } from "@/Components/url_history";
 import { VideoList } from "@/Components/video_list";
 import { Art } from "@/model/art";
@@ -11,6 +12,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+let proxyUrl = "https://proxy.eaias.com/";
 export default function Home() {
     const { query, push, replace } = useRouter();
     const [types, setTypes] = useState<Type[]>([]);
@@ -48,9 +50,7 @@ export default function Home() {
                 .join("&");
             push("?url=" + config.url + "&" + queryString);
 
-            return axios(
-                "https://proxy.eaias.com/" + config.url + "?ac=detail" + "&pg=" + (pg || "") + "&wd=" + (wd || "") + "&t=" + (t || "")
-            )
+            return axios(proxyUrl + config.url + "?ac=detail" + "&pg=" + (pg || "") + "&wd=" + (wd || "") + "&t=" + (t || ""))
                 .then((res) => res.data)
                 .then((data) => {
                     if (!Array.isArray(data.list)) return;
@@ -78,7 +78,7 @@ export default function Home() {
     const init = useCallback((url: string, wd: string, tid: number) => {
         if (!url) return;
         setLoading(true);
-        axios("https://proxy.eaias.com/" + url + "?ac=list")
+        axios(proxyUrl + url + "?ac=list")
             .then((res) => res.data)
             .then((data) => {
                 if (!Array.isArray(data.class)) return;
@@ -87,10 +87,10 @@ export default function Home() {
             .catch((e) => {
                 console.error(e);
             });
-        axios("https://proxy.eaias.com/" + url + "?ac=detail" + "&pg=1" + "&wd=" + (wd || "") + "&t=" + (tid || ""))
+        axios(proxyUrl + url + "?ac=detail" + "&pg=1" + "&wd=" + (wd || "") + "&t=" + (tid || ""))
             .then((res) => res.data)
             .then((data) => {
-                if (!Array.isArray(data.list)) return;
+                if (!Array.isArray(data.list)) data.list = [];
                 setConfig((v) => {
                     if (v.type == "vod") setVods(data.list);
                     else setArts(data.list);
@@ -105,6 +105,11 @@ export default function Home() {
                     setLoading(false);
                 }, 500)
             );
+    }, []);
+
+    useEffect(() => {
+        let url = localStorage.getItem("setting_proxyUrl");
+        proxyUrl = url || "https://proxy.eaias.com/";
     }, []);
 
     useEffect(() => {
@@ -166,13 +171,14 @@ export default function Home() {
                     </button>
                 </div>
                 <UrlHistory />
+                <Setting onChange={(option) => (proxyUrl = option.proxyUrl)} />
             </div>
         );
     }
     return (
         <>
             <Head>
-                <title>CMS Ls</title>
+                <title>CMS 播放器</title>
                 <meta name="description" content="直接浏览采集站数据" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />

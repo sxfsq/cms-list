@@ -18,6 +18,10 @@ export const VideoList = ({
     const [detail, setDetail] = useState<Video>();
     const [showDetail, setShowDetail] = useState(false);
 
+    if (vods.length == 0) {
+        return <div style={{ marginTop: 30, textAlign: "center" }}>未获取数据</div>;
+    }
+
     return (
         <ScroolContain onScroolTop={onScroolTop} onScroolEnd={onScroolEnd} className="vod-list">
             {vods.map((v, i) => {
@@ -32,7 +36,11 @@ export const VideoList = ({
                     >
                         <img className="vod-pic" alt={v.vod_name} src={v.vod_pic} />
                         <div className="vod-info">
-                            <div className="vod-name" onClick={(e) => e.stopPropagation()} dangerouslySetInnerHTML={{ __html: v.vod_name || "" }} />
+                            <div
+                                className="vod-name"
+                                onClick={(e) => e.stopPropagation()}
+                                dangerouslySetInnerHTML={{ __html: v.vod_name || "" }}
+                            />
                             {/* <span style={{ flex: 1 }}></span> */}
                             <div className="vod-info-footer">
                                 <span className="vod-duration">{v.vod_duration}</span>
